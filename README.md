@@ -41,24 +41,23 @@ Let's go wild
 Following schema will generate array with generated objects (name, age). For exmaple: 
 ```json
 {
-"people": [
-    {
-        "name": "Bob",
-        "age" : "18"
-    },
-    {
-      "name": "Alice",
-      "age": 25
-    },
-    {
-        "name": "George",
-        "age": 85
-    },
-    {
-        "name": "Janice",
-        "age": 34
-    }
-  ]
+	"people": [{
+			"name": "Bob",
+			"age": "18"
+		},
+		{
+			"name": "Alice",
+			"age": 25
+		},
+		{
+			"name": "George",
+			"age": 85
+		},
+		{
+			"name": "Janice",
+			"age": 34
+		}
+	]
 }
 ```
 
@@ -69,7 +68,7 @@ Following schema will generate array with generated objects (name, age). For exm
 - *age* - number between 1-99 (inclusive)
 - *city* - generic city
 - *street_address*
-- ~~lorem(n) - lorem ipsum length of *n-words*~~
+- lorem(n) - lorem ipsum length of *n-words*
 - *option([arg1,...,argn])* - pick randomly one of arg1,..., argn
 
 #### range(prop, l, [h])
