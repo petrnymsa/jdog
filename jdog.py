@@ -1,5 +1,7 @@
 import json
-import re
+from faker import Faker
+
+from jdog.placeholder.name import NamePlaceholder, NamePlaceholderOption
 
 # todo import faker
 # todo sphinx  https://readthedocs.org/
@@ -7,41 +9,33 @@ import re
 TOKEN_CITY = "city"
 
 
-class Placeholder:
-    def __init__(self, full_name, name, arguments):
-        print(f'input argument: {full_name}')
-        self.full_name = full_name
-        print(f'assigned {self.full_name}')
-        self.name = name
-        self.arguments = arguments
 
-    def exec(self):
-        pass
 
-    def __str__(self):
-        print(self.full_name)
-        return f"{self.full_name} {self.name} {self.arguments}"
 
-class PlaceholderParser:
-    def __init__(self):
-        self.token_pattern = re.compile("^{{.*}}$")
-        self.city = re.compile("^{{(city)}}$")
 
-    def parse(self, input_value):
-        res = re.match(self.token_pattern, input_value)
 
-        if res is None:
-            raise ValueError(f"Given {input_value} is not valid token")
-        print(input_value)
-        res = self.try_pattern(self.city, input_value)
-        if res is not None:
-            return Placeholder(input_value, TOKEN_CITY, None)
 
-        if res is None:
-            raise ValueError(f"Given {input_value} is not valid token")
 
-    def try_pattern(self, pattern, input_value):
-        return re.match(pattern, input_value)
+# class PlaceholderParser:
+#     def __init__(self):
+#         self.token_pattern = re.compile("^{{.*}}$")
+#         self.city = re.compile("^{{(city)}}$")
+#
+#     def parse(self, input_value):
+#         res = re.match(self.token_pattern, input_value)
+#
+#         if res is None:
+#             raise ValueError(f"Given {input_value} is not valid token")
+#         print(input_value)
+#         res = self.try_pattern(self.city, input_value)
+#         if res is not None:
+#             return Placeholder(input_value, TOKEN_CITY, None)
+#
+#         if res is None:
+#             raise ValueError(f"Given {input_value} is not valid token")
+#
+#     def try_pattern(self, pattern, input_value):
+#         return re.match(pattern, input_value)
 
 
 class Node:
@@ -79,13 +73,12 @@ class ScalarNode(Node):
         return f'"{self.value}"'
 
 
-class RandomScalarNode(Node):
+class PlaceholderNode(Node):
     def __init__(self, placeholder):
         self.placeholder = placeholder
 
     def exec(self):
-        print("Using placeholder to generate scalar value")
-        return 'random placeholder used'
+        return f'"{self.placeholder.exec()}"'
 
 
 class PropertyNode(Node):
@@ -97,20 +90,20 @@ class PropertyNode(Node):
         return f'"{self.name}":{self.child.exec()}'
 
 
-
-
 if __name__ == '__main__':
     inp = """{"p": "a" }"""
     # parser = TokenParser()
     # token = parser.parse(inp)
     # print(token)
 
+    faker = Faker('cs-CZ')
+
     root = ObjectNode([
         PropertyNode('A', ScalarNode('a')),
         PropertyNode('B', ScalarNode('b')),
         PropertyNode('NestedObject', ObjectNode([
             PropertyNode('age', ScalarNode(18)),
-            PropertyNode('name', ScalarNode('petr'))
+            PropertyNode('name', PlaceholderNode(NamePlaceholder('sad', [], faker)))
         ])),
         PropertyNode('SomeArray', ArrayNode([
             ScalarNode(1),
