@@ -6,5 +6,8 @@ class ScalarNode(Node):
         self.value = value
 
     def exec(self):
-        return f'"{self.value}"'
+        if isinstance(self.value, str):
+            return f'"{self.value}"'
+        else:
+            return self.value
 

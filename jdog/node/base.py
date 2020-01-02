@@ -12,7 +12,7 @@ class _GroupNode(Node):
         self.nodes = nodes
 
     def exec(self):
-        s = ','.join(n.exec() for n in self.nodes)
+        s = ','.join(str(n.exec()) for n in self.nodes)
         return f'{self.begin_token}{s}{self.end_token}'
 
 
