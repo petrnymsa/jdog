@@ -46,8 +46,8 @@ if __name__ == '__main__':
     #     ]), 4)
     # ])
 
-    parser = SchemeParser()
-    raw = """{"SomeName": "{{first_name}}"}"""
+    parser = SchemeParser('cs-CZ')
+    raw = """{"first_name":"{{first_name}}","last_name":"{{last_name}}"}"""
     root = parser.parse(raw)
     res = root.exec()
 
