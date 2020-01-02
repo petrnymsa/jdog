@@ -7,4 +7,4 @@ class PropertyNode(Node):
         self.child = child
 
     def exec(self):
-        return f'"{self.name}":{self.child.exec()}'
+        return f'{self.name.exec()}:{self.child.exec()}'

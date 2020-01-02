@@ -14,14 +14,12 @@ class NamePlaceholderOption(IntFlag):
 class NamePlaceholder(FakerPlaceholder):
     """Generates random name, with specified parameter it can be set to generate specific type of name"""
 
-    def __init__(self, full_name, arguments, fake_provider, option=NamePlaceholderOption.FULL_NAME):
+    def __init__(self, full_name, fake_provider, option=NamePlaceholderOption.FULL_NAME):
         """
         Parameters
         ----------
         full_name : str
             The full name, non parsed of placeholder
-        arguments : list
-            Any kind of arguments of placeholder
         fake_provider: Faker
             Faker object to generate name
         option: NamePlaceholderOption
@@ -32,7 +30,7 @@ class NamePlaceholder(FakerPlaceholder):
             generate male full names.
             FULL_NAME and GENDER_BOTH are default
         """
-        super().__init__(full_name, arguments, fake_provider)
+        super().__init__(full_name, [], fake_provider)
         self.option = option
 
     def exec(self):
