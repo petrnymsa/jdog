@@ -19,6 +19,7 @@ class SchemeParser:
     STREET_ADDRESS = 'street_address'
     AGE = 'age'
     NUMBER = 'number'
+    LOREM = 'lorem'
 
     def __init__(self, lang='en-US'):
         self.faker = Faker(lang)
@@ -29,7 +30,8 @@ class SchemeParser:
             SchemeParser.CITY: re.compile('^{{city}}$'),
             SchemeParser.STREET_ADDRESS: re.compile('^{{street_address}}$'),
             SchemeParser.AGE: re.compile('^{{age}}$'),
-            SchemeParser.NUMBER: re.compile(r'^{{number\((.*)\)}}$')
+            SchemeParser.NUMBER: re.compile(r'^{{number\((.*)\)}}$'),
+            SchemeParser.LOREM: re.compile(r'^{{lorem\((.*)\)}}$'),
         }
         self.matchers = {
             SchemeParser.NAME: lambda token: self.compiled_matchers[SchemeParser.NAME].match(token),
@@ -38,7 +40,8 @@ class SchemeParser:
             SchemeParser.CITY: lambda token: self.compiled_matchers[SchemeParser.CITY].match(token),
             SchemeParser.STREET_ADDRESS: lambda token: self.compiled_matchers[SchemeParser.STREET_ADDRESS].match(token),
             SchemeParser.AGE: lambda token: self.compiled_matchers[SchemeParser.AGE].match(token),
-            SchemeParser.NUMBER: lambda token: self.compiled_matchers[SchemeParser.NUMBER].match(token)
+            SchemeParser.NUMBER: lambda token: self.compiled_matchers[SchemeParser.NUMBER].match(token),
+            SchemeParser.LOREM: lambda token: self.compiled_matchers[SchemeParser.LOREM].match(token)
         }
         self.placeholders = {
             SchemeParser.NAME:
@@ -54,7 +57,9 @@ class SchemeParser:
             SchemeParser.AGE:
                 lambda token, _: FuncPlaceholder(token, lambda: random.randint(1, 99)),
             SchemeParser.NUMBER:
-                lambda token, args: FuncPlaceholder(token, lambda: random.randint(int(args[0]), int(args[1]) - 1))
+                lambda token, args: FuncPlaceholder(token, lambda: random.randint(int(args[0]), int(args[1]) - 1)),
+            SchemeParser.LOREM:
+                lambda token, args: FuncStrPlaceholder(token, lambda: self.faker.sentence(nb_words=int(args[0])))
         }
 
     def _match_token(self, token):
