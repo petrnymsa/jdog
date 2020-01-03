@@ -45,11 +45,11 @@ class RangeNode(Node):
     def exec(self):
         children = []
         if self.h is None:
+            print(self.l)
             for i in range(self.l):
                 children.append(self.child)
         else:
-            top = random.randint(self.l, self.h-1)
-            for i in range(self.l, top):
+            for i in range(random.randint(self.l, self.h-1)):
                 children.append(self.child)
 
         return f'"{self.name}": {ArrayNode(children).exec()}'
@@ -69,7 +69,10 @@ class PropertyNode(Node):
         self.child = child
 
     def exec(self):
-        return f'{self.name.exec()}:{self.child.exec()}'
+        if self.child:
+            return f'{self.name.exec()}:{self.child.exec()}'
+        else:
+            return f'{self.name.exec()}:""'
 
 
 class ScalarNode(Node):
