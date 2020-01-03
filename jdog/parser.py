@@ -20,6 +20,7 @@ class SchemeParser:
     AGE = 'age'
     NUMBER = 'number'
     LOREM = 'lorem'
+    OPTION = 'option'
 
     def __init__(self, lang='en-US'):
         self.faker = Faker(lang)
@@ -32,6 +33,7 @@ class SchemeParser:
             SchemeParser.AGE: re.compile('^{{age}}$'),
             SchemeParser.NUMBER: re.compile(r'^{{number\((.*)\)}}$'),
             SchemeParser.LOREM: re.compile(r'^{{lorem\((.*)\)}}$'),
+            SchemeParser.OPTION: re.compile(r'^{{option\((.*)\)}}$')
         }
         self.matchers = {
             SchemeParser.NAME: lambda token: self.compiled_matchers[SchemeParser.NAME].match(token),
@@ -41,7 +43,8 @@ class SchemeParser:
             SchemeParser.STREET_ADDRESS: lambda token: self.compiled_matchers[SchemeParser.STREET_ADDRESS].match(token),
             SchemeParser.AGE: lambda token: self.compiled_matchers[SchemeParser.AGE].match(token),
             SchemeParser.NUMBER: lambda token: self.compiled_matchers[SchemeParser.NUMBER].match(token),
-            SchemeParser.LOREM: lambda token: self.compiled_matchers[SchemeParser.LOREM].match(token)
+            SchemeParser.LOREM: lambda token: self.compiled_matchers[SchemeParser.LOREM].match(token),
+            SchemeParser.OPTION: lambda token: self.compiled_matchers[SchemeParser.OPTION].match(token)
         }
         self.placeholders = {
             SchemeParser.NAME:
@@ -59,7 +62,9 @@ class SchemeParser:
             SchemeParser.NUMBER:
                 lambda token, args: FuncPlaceholder(token, lambda: random.randint(int(args[0]), int(args[1]) - 1)),
             SchemeParser.LOREM:
-                lambda token, args: FuncStrPlaceholder(token, lambda: self.faker.sentence(nb_words=int(args[0])))
+                lambda token, args: FuncStrPlaceholder(token, lambda: self.faker.sentence(nb_words=int(args[0]))),
+            SchemeParser.OPTION:
+                lambda token, args: FuncStrPlaceholder(token, lambda: random.choice(args))
         }
 
     def _match_token(self, token):
