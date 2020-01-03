@@ -2,11 +2,6 @@ import json
 import random
 from faker import Faker
 
-from jdog.placeholder.name import NamePlaceholder, NamePlaceholderOption
-from jdog.node.base import ObjectNode, ArrayNode, Node, RangeNode, FuncNode
-from jdog.node.property import PropertyNode
-from jdog.node.placeholder import PlaceholderNode
-from jdog.node.scalar import ScalarNode
 from jdog.parser import SchemeParser
 
 

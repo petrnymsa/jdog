@@ -3,10 +3,7 @@ import json
 
 from faker import Faker
 
-from jdog.node.base import ArrayNode, ObjectNode
-from jdog.node.placeholder import PlaceholderNode
-from jdog.node.property import PropertyNode
-from jdog.node.scalar import ScalarNode
+from jdog.node import PropertyNode, ScalarNode, PlaceholderNode, ObjectNode, ArrayNode
 from jdog.placeholder.name import NamePlaceholder, NamePlaceholderOption
 
 # todo name - gender parameter

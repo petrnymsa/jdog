@@ -1,5 +1,6 @@
 import random
 
+
 class Node:
     def exec(self):
         pass
@@ -52,3 +53,31 @@ class RangeNode(Node):
                 children.append(self.child)
 
         return f'"{self.name}": {ArrayNode(children).exec()}'
+
+
+class PlaceholderNode(Node):
+    def __init__(self, placeholder):
+        self.placeholder = placeholder
+
+    def exec(self):
+        return f'"{self.placeholder.exec()}"'
+
+
+class PropertyNode(Node):
+    def __init__(self, name, child):
+        self.name = name
+        self.child = child
+
+    def exec(self):
+        return f'{self.name.exec()}:{self.child.exec()}'
+
+
+class ScalarNode(Node):
+    def __init__(self, value):
+        self.value = value
+
+    def exec(self):
+        if isinstance(self.value, str):
+            return f'"{self.value}"'
+        else:
+            return self.value
