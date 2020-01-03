@@ -35,11 +35,11 @@ class NamePlaceholder(FakerPlaceholder):
 
     def exec(self):
         if NamePlaceholderOption.FIRST_NAME in self.option:
-            return self._first_name()
+            return f'"{self._first_name()}"'
         elif NamePlaceholderOption.LAST_NAME in self.option:
-            return self._last_name()
+            return f'"{self._last_name()}"'
         else:
-            return self._name()
+            return f'"{self._name()}"'
 
     def _name(self):
         if NamePlaceholderOption.GENDER_MALE in self.option:

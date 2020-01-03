@@ -60,7 +60,7 @@ class PlaceholderNode(Node):
         self.placeholder = placeholder
 
     def exec(self):
-        return f'"{self.placeholder.exec()}"'
+        return self.placeholder.exec()
 
 
 class PropertyNode(Node):
