@@ -1,0 +1,10 @@
+{
+  "{{range(people,4)}}": {
+    "name": "{{name}}",
+    "age": "{{age}}",
+    "address": {
+      "city": "{{city}}"
+    },
+    "car": "{{option(mustang,{{empty}})}}"
+  }
+}
