@@ -8,6 +8,7 @@ from jdog.node import PropertyNode, ScalarNode, PlaceholderNode, ObjectNode, Arr
 from jdog.placeholder.name import NamePlaceholder, NamePlaceholderOption
 
 # todo name - gender parameter
+from jdog.placeholder.option import OptionPlaceholder
 from jdog.placeholder.placeholder import FuncPlaceholder, FuncStrPlaceholder
 
 
@@ -64,8 +65,37 @@ class SchemeParser:
             SchemeParser.LOREM:
                 lambda token, args: FuncStrPlaceholder(token, lambda: self.faker.sentence(nb_words=int(args[0]))),
             SchemeParser.OPTION:
-                lambda token, args: FuncStrPlaceholder(token, lambda: random.choice(args))
+                lambda token, args: OptionPlaceholder(token, args)
         }
+
+    @staticmethod
+    def _parse_arguments(p):
+        args = []
+        while len(p) > 0:
+            m = p.partition(',')
+            param = m[0]
+            if param.startswith('{{'):  # token
+                part = param
+                parts = [part]
+                # keep going until we got whole token
+                while not part.endswith('}}') and len(p) > 0:
+                    p = m[2]
+                    m = p.partition(',')
+                    part = m[0]
+                    parts.append(part)
+
+                param = ','.join(parts)
+                p = m[2]
+            else:  # just normal param
+                p = m[2]
+
+            args.append(param)
+
+        return args
+
+    @staticmethod
+    def _is_token(arg):
+        return re.match('^{{.*}}$', arg)
 
     def _match_token(self, token):
         for key in self.matchers:
@@ -73,7 +103,16 @@ class SchemeParser:
             if m is not None:
                 args = []
                 if len(m.groups()) > 0:
-                    args = m.group(1).split(',')
+                    m_params = m.group(1)
+                    parsed_args = self._parse_arguments(m_params)
+                    # while len(params)
+                    #m_args = m.group(1).split(',')
+                    # parse args to placeholders
+                    for arg in parsed_args:
+                        if self._is_token(arg):
+                            args.append(self._sub_parse(arg))
+                        else:
+                            args.append(arg)
 
                 return self.placeholders[key](token, args)
         return None
