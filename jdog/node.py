@@ -38,18 +38,17 @@ class FuncNode(Node):
 class RangeNode(Node):
     def __init__(self, name, l, child, h=None):
         self.name = name
-        self.l = l
-        self.h = h
+        self.low = int(l)
+        self.high = int(h) if h else None
         self.child = child
 
     def exec(self):
         children = []
-        if self.h is None:
-            print(self.l)
-            for i in range(self.l):
+        if self.high is None:
+            for i in range(self.low):
                 children.append(self.child)
         else:
-            for i in range(random.randint(self.l, self.h-1)):
+            for i in range(random.randint(self.low, self.high - 1)):
                 children.append(self.child)
 
         return f'"{self.name}": {ArrayNode(children).exec()}'

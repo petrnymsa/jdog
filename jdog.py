@@ -1,11 +1,13 @@
 import json
 import random
+import re
 from faker import Faker
 
 from jdog.parser import SchemeParser
 
 
 # todo sphinx  https://readthedocs.org/
+from jdog.placeholder.placeholder import FuncPlaceholder
 
 
 def validate(text):
@@ -19,30 +21,21 @@ def validate(text):
 if __name__ == '__main__':
     faker = Faker('cs-CZ')
 
-    # root = ObjectNode([
-    #     PropertyNode(ScalarNode('A'), ScalarNode('a')),
-    #     PropertyNode(ScalarNode('B'), ScalarNode('b')),
-    #     PropertyNode(ScalarNode('NestedObject'), ObjectNode([
-    #         PropertyNode(ScalarNode('age'), ScalarNode(18)),
-    #         PropertyNode(ScalarNode('name'), PlaceholderNode(NamePlaceholder('sad', [], faker)))
-    #     ])),
-    #     PropertyNode(ScalarNode('SomeArray'), ArrayNode([
-    #         ScalarNode(1),
-    #         ScalarNode(2),
-    #         ObjectNode([
-    #             PropertyNode(ScalarNode('foo'), ScalarNode('baz'))
-    #         ])
-    #     ])),
-    # ])
-    # root = ObjectNode([
-    #     RangeNode('people', 1, ObjectNode([
-    #         # PropertyNode(ScalarNode('name'), PlaceholderNode(NamePlaceholder('name', [], faker))),
-    #         PropertyNode(ScalarNode('age'), FuncNode(lambda: random.randint(18, 100)))
-    #     ]), 4)
-    # ])
-
     parser = SchemeParser('cs-CZ')
-    raw = """{"first_name":"{{first_name}}","last_name":"{{last_name}}"}"""
+
+    parser.add_matcher('zip', lambda t: re.match('^{{postcode}}$', t), lambda t: FuncPlaceholder(t, faker.postcode))
+
+    #raw = """{"first_name":"{{first_name}}","last_name":"{{last_name}}", "city":"{{city}}","age":"{{age}}","address":"{{option({{number(0,3)}},{{empty}})}}"}"""
+    # raw = """{"text":"{{option({{city}},{{first_name}},{{number(0,10)}})}}"}"""
+   #raw = """{"{{range(people,4)}}":{"name": "{{first_name}}"}}"""
+    raw = """{
+	"{{range(people,3)}}": {
+		"name": "{{name}}",
+		"rank": "{{number(1,100)}}",
+		"age": "{{option({{empty}},{{age}})}}",
+		"city": "{{option(praha,brno)}}"
+	}
+}"""
     root = parser.parse(raw)
     res = root.exec()
 
@@ -53,3 +46,7 @@ if __name__ == '__main__':
     # print(json.dumps(json.loads(res), indent=4, sort_keys=True, ensure_ascii=False).encode('utf8').decode())
     print()
     print(res)
+
+    for x in range(3):
+        res = root.exec()
+        print(res)

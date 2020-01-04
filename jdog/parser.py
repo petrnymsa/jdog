@@ -4,12 +4,13 @@ import random
 
 from faker import Faker
 
-from jdog.node import PropertyNode, ScalarNode, PlaceholderNode, ObjectNode, ArrayNode
+from jdog.node import PropertyNode, ScalarNode, PlaceholderNode, ObjectNode, ArrayNode, RangeNode
 from jdog.placeholder.name import NamePlaceholder, NamePlaceholderOption
 
 # todo name - gender parameter
 from jdog.placeholder.option import OptionPlaceholder
 from jdog.placeholder.placeholder import FuncPlaceholder, FuncStrPlaceholder
+from jdog.placeholder.range import RangePlaceholder
 
 
 class SchemeParser:
@@ -23,6 +24,7 @@ class SchemeParser:
     LOREM = 'lorem'
     OPTION = 'option'
     EMPTY = 'empty'
+    RANGE = 'range'
 
     def __init__(self, lang='en-US'):
         self.faker = Faker(lang)
@@ -37,6 +39,7 @@ class SchemeParser:
             SchemeParser.LOREM: re.compile(r'^{{lorem\((.*)\)}}$'),
             SchemeParser.OPTION: re.compile(r'^{{option\((.*)\)}}$'),
             SchemeParser.EMPTY: re.compile(r'^{{empty}}$'),
+            SchemeParser.RANGE: re.compile(r'^{{range\((.*)\)}}$'),
         }
         self.matchers = {
             SchemeParser.NAME: lambda token: self.compiled_matchers[SchemeParser.NAME].match(token),
@@ -48,7 +51,8 @@ class SchemeParser:
             SchemeParser.NUMBER: lambda token: self.compiled_matchers[SchemeParser.NUMBER].match(token),
             SchemeParser.LOREM: lambda token: self.compiled_matchers[SchemeParser.LOREM].match(token),
             SchemeParser.OPTION: lambda token: self.compiled_matchers[SchemeParser.OPTION].match(token),
-            SchemeParser.EMPTY: lambda token: self.compiled_matchers[SchemeParser.EMPTY].match(token)
+            SchemeParser.EMPTY: lambda token: self.compiled_matchers[SchemeParser.EMPTY].match(token),
+            SchemeParser.RANGE: lambda token: self.compiled_matchers[SchemeParser.RANGE].match(token)
         }
         self.placeholders = {
             SchemeParser.NAME:
@@ -70,7 +74,9 @@ class SchemeParser:
             SchemeParser.OPTION:
                 lambda token, args: OptionPlaceholder(token, args),
             SchemeParser.EMPTY:
-                lambda token, _: FuncStrPlaceholder(token, lambda: '')
+                lambda token, _: FuncStrPlaceholder(token, lambda: ''),
+            SchemeParser.RANGE:
+                lambda token, args: RangePlaceholder(token, args)
         }
 
     @staticmethod
@@ -143,8 +149,11 @@ class SchemeParser:
                 if placeholder is None:
                     props.append(PropertyNode(ScalarNode(key), self._sub_parse(sub[key])))
                 else:
-                    placeholder = self._match_token(key)
-                    props.append(PropertyNode(PlaceholderNode(placeholder), self._sub_parse(sub[key])))
+                    # special case for RangePlaceholder
+                    if isinstance(placeholder, RangePlaceholder):
+                        props.append(RangeNode(placeholder.prop, placeholder.low, self._sub_parse(sub[key]), placeholder.high if hasattr(placeholder, 'high') else None))
+                    else:
+                        props.append(PropertyNode(PlaceholderNode(placeholder), self._sub_parse(sub[key])))
             return ObjectNode(props)
         else:
             placeholder = self._match_token(sub)
