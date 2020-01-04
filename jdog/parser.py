@@ -22,6 +22,7 @@ class SchemeParser:
     NUMBER = 'number'
     LOREM = 'lorem'
     OPTION = 'option'
+    EMPTY = 'empty'
 
     def __init__(self, lang='en-US'):
         self.faker = Faker(lang)
@@ -34,7 +35,8 @@ class SchemeParser:
             SchemeParser.AGE: re.compile('^{{age}}$'),
             SchemeParser.NUMBER: re.compile(r'^{{number\((.*)\)}}$'),
             SchemeParser.LOREM: re.compile(r'^{{lorem\((.*)\)}}$'),
-            SchemeParser.OPTION: re.compile(r'^{{option\((.*)\)}}$')
+            SchemeParser.OPTION: re.compile(r'^{{option\((.*)\)}}$'),
+            SchemeParser.EMPTY: re.compile(r'^{{empty}}$'),
         }
         self.matchers = {
             SchemeParser.NAME: lambda token: self.compiled_matchers[SchemeParser.NAME].match(token),
@@ -45,7 +47,8 @@ class SchemeParser:
             SchemeParser.AGE: lambda token: self.compiled_matchers[SchemeParser.AGE].match(token),
             SchemeParser.NUMBER: lambda token: self.compiled_matchers[SchemeParser.NUMBER].match(token),
             SchemeParser.LOREM: lambda token: self.compiled_matchers[SchemeParser.LOREM].match(token),
-            SchemeParser.OPTION: lambda token: self.compiled_matchers[SchemeParser.OPTION].match(token)
+            SchemeParser.OPTION: lambda token: self.compiled_matchers[SchemeParser.OPTION].match(token),
+            SchemeParser.EMPTY: lambda token: self.compiled_matchers[SchemeParser.EMPTY].match(token)
         }
         self.placeholders = {
             SchemeParser.NAME:
@@ -65,7 +68,9 @@ class SchemeParser:
             SchemeParser.LOREM:
                 lambda token, args: FuncStrPlaceholder(token, lambda: self.faker.sentence(nb_words=int(args[0]))),
             SchemeParser.OPTION:
-                lambda token, args: OptionPlaceholder(token, args)
+                lambda token, args: OptionPlaceholder(token, args),
+            SchemeParser.EMPTY:
+                lambda token, _: FuncStrPlaceholder(token, lambda: '')
         }
 
     @staticmethod
