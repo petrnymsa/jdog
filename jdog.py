@@ -3,7 +3,7 @@ import random
 import re
 from faker import Faker
 
-from jdog.parser import SchemeParser
+from jdog.jdog import Jdog
 
 
 # todo sphinx  https://readthedocs.org/
@@ -19,16 +19,11 @@ def validate(text):
 
 
 if __name__ == '__main__':
-    faker = Faker('cs-CZ')
-
-    parser = SchemeParser('cs-CZ')
-
-    parser.add_matcher('zip', lambda t: re.match('^{{postcode}}$', t), lambda t: FuncPlaceholder(t, faker.postcode))
-
+    jdog = Jdog()
     #raw = """{"first_name":"{{first_name}}","last_name":"{{last_name}}", "city":"{{city}}","age":"{{age}}","address":"{{option({{number(0,3)}},{{empty}})}}"}"""
     # raw = """{"text":"{{option({{city}},{{first_name}},{{number(0,10)}})}}"}"""
    #raw = """{"{{range(people,4)}}":{"name": "{{first_name}}"}}"""
-    raw = """{
+    scheme = """{
 	"{{range(people,3)}}": {
 		"name": "{{name}}",
 		"rank": "{{number(1,100)}}",
@@ -36,9 +31,10 @@ if __name__ == '__main__':
 		"city": "{{option(praha,brno)}}"
 	}
 }"""
-    root = parser.parse(raw)
-    res = root.exec()
 
+    jdog.parse_scheme(scheme)
+
+    res = jdog.generate()
     if validate(res):
         print('valid json')
     else:
@@ -48,5 +44,5 @@ if __name__ == '__main__':
     print(res)
 
     for x in range(3):
-        res = root.exec()
+        res = jdog.generate()
         print(res)

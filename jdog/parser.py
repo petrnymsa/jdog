@@ -110,14 +110,11 @@ class SchemeParser:
 
     def _match_token(self, token):
         for key in self.matchers:
-            m = self.matchers[key](token)
+            m = self.matchers[key](str(token))
             if m is not None:
                 args = []
                 if len(m.groups()) > 0:
-                    m_params = m.group(1)
-                    parsed_args = self._parse_arguments(m_params)
-                    # while len(params)
-                    #m_args = m.group(1).split(',')
+                    parsed_args = self._parse_arguments(m.group(1))
                     # parse args to placeholders
                     for arg in parsed_args:
                         if self._is_token(arg):

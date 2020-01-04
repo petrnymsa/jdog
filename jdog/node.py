@@ -79,7 +79,7 @@ class ScalarNode(Node):
         self.value = value
 
     def exec(self):
-        if isinstance(self.value, str) and not self.value.isdigit():
+        if isinstance(self.value, str):
             return f'"{self.value}"'
         else:
             return self.value
