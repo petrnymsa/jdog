@@ -1,4 +1,4 @@
-name: Python application
+name: JDOG Build and test
 
 on: [push]
 
