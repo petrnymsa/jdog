@@ -28,3 +28,12 @@ jobs:
       run: |
         pip install pytest
         python -m pytest
+    - name: Upload to test pypi
+      env:
+        TWINE_REPOSITORY_URL: https://test.pypi.org/legacy/
+        TWINE_USERNAME: ${{ secrets.TEST_PYPI_USERNAME }}
+        TWINE_PASSWORD: ${{ secrets.TEST_PYPI_PASSWORD }}
+      run: |
+        pip install twine
+        python setup.py sdist        
+        twine upload -r testpypi dist/*
