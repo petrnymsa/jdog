@@ -25,17 +25,16 @@ def validate_lang(ctx, prop, value):
 
 
 @click.command('jdog')
-@click.argument('scheme', type=click.Path(exists=True))
+@click.argument('scheme', type=click.File('r'))
 @click.option('-p', '--pretty', is_flag=True, default=False, help='Output pretty JSON')
-@click.option('-l', '--lang', default='en-US', help='Language to use', callback=validate_lang)
+@click.option('-l', '--lang', default='en_US', help='Language to use', callback=validate_lang)
 @click.option('--lang-help', is_flag=True, default=False, help='Displays available language codes and exit.', callback=callback_lang_help)
 def run(scheme, pretty, lang, lang_help):
     """Accepts SCHEME and generate new data to stdin or to specified OUTPUT"""
 
     jdog = Jdog(lang)
 
-    with open(scheme, "r") as f:
-        scheme_text = f.read()
+    scheme_text = scheme.read()
 
     jdog.parse_scheme(scheme_text)
     result = jdog.generate()
