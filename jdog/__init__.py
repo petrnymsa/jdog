@@ -1,3 +1,4 @@
+from jdog.jdog import Jdog
+
 __all__ = ['Jdog']
 
-from jdog.jdog import Jdog
