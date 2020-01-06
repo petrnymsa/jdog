@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 
-with open('README.rst') as f:
+with open('README.rst', encoding='utf-8') as f:
     long_description = ''.join(f.readlines())
 
 
@@ -20,13 +20,10 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Operating System :: POSIX :: Linux',
-        'Operating System :: POSIX :: Windows',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
-        'Framework :: Click',
-        'Framework :: Faker',
         'Environment :: Console',
         'Topic :: Software Development :: Libraries',
     ],
