@@ -2,6 +2,12 @@ Documentation WIP [https://jdog.readthedocs.io/en/latest/]
 
 
 .. image:: https://github.com/petrnymsa/jdog/workflows/build-test/badge.svg
+:target: https://github.com/petrnymsa/jdog/workflows/build-test/badge.svg
+
+
+.. image:: https://readthedocs.org/projects/jdog/badge/?version=latest
+:target: https://jdog.readthedocs.io/en/latest/?badge=latest
+:alt: Documentation Status
 
 Just another Data Offline Generator (JDOG) 🐶
 *********************************************
