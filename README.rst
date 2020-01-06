@@ -9,6 +9,7 @@ Just another Data Offline Generator (JDOG) 🐶
 - For generating sample data, the data scheme is provided
 - The scheme is in JSON format
 
+.. |Build| image:: https://github.com/petrnymsa/jdog/workflows/jdog/badge.svg
 
 Scheme
 ======
