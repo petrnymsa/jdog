@@ -1,4 +1,4 @@
-name: JDOG Build and test
+name: jdog
 
 on: [push]
 
