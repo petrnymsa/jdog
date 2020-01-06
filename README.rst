@@ -1,6 +1,8 @@
 Documentation WIP [https://jdog.readthedocs.io/en/latest/]
 
 
+.. image:: https://github.com/petrnymsa/jdog/workflows/jdog/badge.svg
+
 Just another Data Offline Generator (JDOG) 🐶
 *********************************************
 
@@ -8,8 +10,6 @@ Just another Data Offline Generator (JDOG) 🐶
 - JDOG can be run also as CLI tool.
 - For generating sample data, the data scheme is provided
 - The scheme is in JSON format
-
-.. image:: https://github.com/petrnymsa/jdog/workflows/jdog/badge.svg
 
 Scheme
 ======
