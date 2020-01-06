@@ -1,7 +1,7 @@
 Documentation WIP [https://jdog.readthedocs.io/en/latest/]
 
 
-.. image:: https://github.com/petrnymsa/jdog/workflows/jdog/badge.svg
+.. image:: https://github.com/petrnymsa/jdog/workflows/build-test/badge.svg
 
 Just another Data Offline Generator (JDOG) 🐶
 *********************************************
