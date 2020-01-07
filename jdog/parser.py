@@ -30,9 +30,9 @@ class SchemeParser:
     def __init__(self, lang='en-US'):
         self.faker = Faker(lang)
         self.compiled_matchers = {
-            SchemeParser.NAME: re.compile('^{{name}}$'),
-            SchemeParser.FIRST_NAME: re.compile('^{{first_name}}$'),
-            SchemeParser.LAST_NAME: re.compile('^{{last_name}}$'),
+            SchemeParser.NAME: re.compile(r'^{{name\(?([f,m]?)\)?}}$'),
+            SchemeParser.FIRST_NAME: re.compile(r'^{{first_name\(?([f,m]?)\)?}}$'),
+            SchemeParser.LAST_NAME: re.compile(r'^{{last_name\(?([f,m]?)\)?}}$'),
             SchemeParser.CITY: re.compile('^{{city}}$'),
             SchemeParser.STREET_ADDRESS: re.compile('^{{street_address}}$'),
             SchemeParser.AGE: re.compile('^{{age}}$'),
@@ -59,11 +59,11 @@ class SchemeParser:
         }
         self.placeholders = {
             SchemeParser.NAME:
-                lambda token, _: NamePlaceholder(token, self.faker),
+                lambda token, args: self._placeholder_name(token, args),
             SchemeParser.FIRST_NAME:
-                lambda token, _: NamePlaceholder(token, self.faker, option=NamePlaceholderOption.FIRST_NAME),
+                lambda token, args: self._placeholder_first_name(token, args),
             SchemeParser.LAST_NAME:
-                lambda token, _: NamePlaceholder(token, self.faker, option=NamePlaceholderOption.LAST_NAME),
+                lambda token, args: self._placeholder_last_name(token, args),
             SchemeParser.CITY:
                 lambda token, _: FuncStrPlaceholder(token, self.faker.city),
             SchemeParser.STREET_ADDRESS:
@@ -83,6 +83,32 @@ class SchemeParser:
             SchemeParser.BOOL:
                 lambda token, _: FuncStrPlaceholder(token, lambda: str(random.random() > 0.5).lower())
         }
+
+    def _placeholder_name(self, token, args):
+        if args and args[0] == 'm':
+            return NamePlaceholder(token, self.faker, NamePlaceholderOption.GENDER_MALE)
+        elif args and args[0] == 'f':
+            return NamePlaceholder(token, self.faker, NamePlaceholderOption.GENDER_FEMALE)
+
+        return NamePlaceholder(token, self.faker)
+
+    def _placeholder_first_name(self, token, args):
+        if args and args[0] == 'm':
+            return NamePlaceholder(token, self.faker,
+                                   option=NamePlaceholderOption.FIRST_NAME | NamePlaceholderOption.GENDER_MALE)
+        elif args and args[0] == 'f':
+            return NamePlaceholder(token, self.faker,
+                                   option=NamePlaceholderOption.FIRST_NAME | NamePlaceholderOption.GENDER_FEMALE)
+        return NamePlaceholder(token, self.faker, option=NamePlaceholderOption.FIRST_NAME)
+
+    def _placeholder_last_name(self, token, args):
+        if args and args[0] == 'm':
+            return NamePlaceholder(token, self.faker,
+                                   option=NamePlaceholderOption.LAST_NAME | NamePlaceholderOption.GENDER_MALE)
+        elif args and args[0] == 'f':
+            return NamePlaceholder(token, self.faker,
+                                   option=NamePlaceholderOption.LAST_NAME | NamePlaceholderOption.GENDER_FEMALE)
+        return NamePlaceholder(token, self.faker, option=NamePlaceholderOption.LAST_NAME)
 
     @staticmethod
     def _parse_arguments(p):
@@ -135,7 +161,8 @@ class SchemeParser:
                 else:
                     # special case for RangePlaceholder
                     if isinstance(placeholder, RangePlaceholder):
-                        props.append(RangeNode(placeholder.prop, placeholder.low, self._sub_parse(sub[key]), placeholder.high if hasattr(placeholder, 'high') else None))
+                        props.append(RangeNode(placeholder.prop, placeholder.low, self._sub_parse(sub[key]),
+                                               placeholder.high if hasattr(placeholder, 'high') else None))
                     else:
                         props.append(PropertyNode(PlaceholderNode(placeholder), self._sub_parse(sub[key])))
             return ObjectNode(props)

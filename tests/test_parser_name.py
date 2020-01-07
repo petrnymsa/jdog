@@ -52,24 +52,16 @@ def name_placeholder(monkeypatch):
     monkeypatch.setattr(NamePlaceholder, 'exec', get_name)
 
 
-def test_name(name_placeholder):
+@pytest.mark.parametrize("scheme,expected",
+                         [("name", NAME), ("name(m)", NAME_MALE), ("name(f)", NAME_FEMALE),
+                          ("first_name", FIRST_NAME), ("first_name(m)", FIRST_NAME_MALE),
+                          ("first_name(f)", FIRST_NAME_FEMALE),
+                          ("last_name", LAST_NAME), ("last_name(m)", LAST_NAME_MALE),
+                          ("last_name(f)", LAST_NAME_FEMALE)])
+def test_name(name_placeholder, scheme, expected):
     parser = SchemeParser()
-    scheme = '{"value":"{{name}}"}'
+    scheme = f'{{"value":"{{{{{scheme}}}}}"}}'
     res = parser.parse(scheme)
-    assert res.exec() == f'{{"value":"{NAME}"}}'
+    assert res.exec() == f'{{"value":"{expected}"}}'
 
-
-def test_first_name(name_placeholder):
-    parser = SchemeParser()
-    scheme = '{"value":"{{first_name}}"}'
-
-    res = parser.parse(scheme)
-    assert res.exec() == f'{{"value":"{FIRST_NAME}"}}'
-
-
-def test_last_name(name_placeholder):
-    parser = SchemeParser()
-    scheme = '{"value":"{{last_name}}"}'
-
-    res = parser.parse(scheme)
-    assert res.exec() == f'{{"value":"{LAST_NAME}"}}'
+#todo negative tests
