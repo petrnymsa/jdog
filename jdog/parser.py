@@ -25,6 +25,7 @@ class SchemeParser:
     OPTION = 'option'
     EMPTY = 'empty'
     RANGE = 'range'
+    BOOL = 'bool'
 
     def __init__(self, lang='en-US'):
         self.faker = Faker(lang)
@@ -40,6 +41,7 @@ class SchemeParser:
             SchemeParser.OPTION: re.compile(r'^{{option\((.*)\)}}$'),
             SchemeParser.EMPTY: re.compile(r'^{{empty}}$'),
             SchemeParser.RANGE: re.compile(r'^{{range\((.*)\)}}$'),
+            SchemeParser.BOOL: re.compile(r'^{{bool}}$')
         }
         self.matchers = {
             SchemeParser.NAME: lambda token: self.compiled_matchers[SchemeParser.NAME].match(token),
@@ -52,7 +54,8 @@ class SchemeParser:
             SchemeParser.LOREM: lambda token: self.compiled_matchers[SchemeParser.LOREM].match(token),
             SchemeParser.OPTION: lambda token: self.compiled_matchers[SchemeParser.OPTION].match(token),
             SchemeParser.EMPTY: lambda token: self.compiled_matchers[SchemeParser.EMPTY].match(token),
-            SchemeParser.RANGE: lambda token: self.compiled_matchers[SchemeParser.RANGE].match(token)
+            SchemeParser.RANGE: lambda token: self.compiled_matchers[SchemeParser.RANGE].match(token),
+            SchemeParser.BOOL: lambda token: self.compiled_matchers[SchemeParser.BOOL].match(token),
         }
         self.placeholders = {
             SchemeParser.NAME:
@@ -76,7 +79,9 @@ class SchemeParser:
             SchemeParser.EMPTY:
                 lambda token, _: FuncStrPlaceholder(token, lambda: ''),
             SchemeParser.RANGE:
-                lambda token, args: RangePlaceholder(token, args)
+                lambda token, args: RangePlaceholder(token, args),
+            SchemeParser.BOOL:
+                lambda token, _: FuncStrPlaceholder(token, lambda: str(random.random() > 0.5).lower())
         }
 
     @staticmethod
