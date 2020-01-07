@@ -1,4 +1,8 @@
-Code
+***
+API
+***
+
+JDOG
 ====
 
 .. automodule:: jdog.jdog
