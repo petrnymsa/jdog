@@ -86,28 +86,10 @@ class SchemeParser:
 
     @staticmethod
     def _parse_arguments(p):
-        args = []
-        while len(p) > 0:
-            m = p.partition(',')
-            param = m[0]
-            if param.startswith('{{'):  # token
-                part = param
-                parts = [part]
-                # keep going until we got whole token
-                while not part.endswith('}}') and len(p) > 0:
-                    p = m[2]
-                    m = p.partition(',')
-                    part = m[0]
-                    parts.append(part)
+        pattern = r'([^,]+\(.+?\)}})|([^,]+)'
+        matches = re.findall(pattern, p)
 
-                param = ','.join(parts)
-                p = m[2]
-            else:  # just normal param
-                p = m[2]
-
-            args.append(param)
-
-        return args
+        return [x[0] if x[0] != '' else x[1] for x in matches]
 
     @staticmethod
     def _is_token(arg):

@@ -10,5 +10,5 @@ class OptionPlaceholder(Placeholder):
         pick = random.choice(self.arguments)
         try:
             return pick.exec()
-        except:
+        except AttributeError:
             return f'"{pick}"'

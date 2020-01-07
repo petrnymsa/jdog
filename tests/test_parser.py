@@ -14,3 +14,24 @@ def test_bool(monkeypatch):
     assert res.exec() == '{"value":"true"}'
 
 
+def test_option():
+    parser = SchemeParser()
+    scheme = '{"value":"{{option(foo,bar)}}"}'
+
+    parsed = parser.parse(scheme)
+    res = parsed.exec()
+
+    assert res == '{"value":"foo"}' or res == '{"value":"bar"}'
+
+
+def test_option_nested(monkeypatch):
+    parser = SchemeParser()
+    scheme = '{"value":"{{option(foo,{{age}})}}"}'
+
+    monkeypatch.setattr(random, 'randint', lambda a, b: 1)
+
+    parsed = parser.parse(scheme)
+    res = parsed.exec()
+
+    assert res == '{"value":"foo"}' or res == '{"value":1}'
+
