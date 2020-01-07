@@ -142,8 +142,8 @@ class SchemeParser:
         self.matchers[key] = f_matcher
         self.placeholders[key] = f_placeholder
 
-    def defined_keys(self):
-        return self.matchers.keys()
+    def placeholder_keys(self):
+        return self.placeholders.keys()
 
     def _sub_parse(self, sub):
         if isinstance(sub, list):

@@ -5,6 +5,7 @@ Documentation WIP [https://jdog.readthedocs.io/en/latest/]
 
 .. image:: https://readthedocs.org/projects/jdog/badge/?version=latest
 
+*********************************************
 Just another Data Offline Generator (JDOG) 🐶
 *********************************************
 
@@ -15,11 +16,14 @@ Just another Data Offline Generator (JDOG) 🐶
 
 Scheme
 ======
-- Scheme of data is provided as a JSON file with special placeholders.
-- Placeholder is, special place within JSON, and its purpose is like variable, where generated data will be replaced.
-- Output file is nearly the same as scheme besides replaced placeholders.
 
-In the simplest form, given JSON file::
+- Scheme is provided in JSON format with special placeholders.
+- Placeholder is something like variable, where generated data will be replaced.
+- Output is nearly the same as scheme besides replaced placeholders.
+
+In the simplest form, given JSON scheme
+
+.. code-block::
 
     {
         "name": "Bob",
@@ -28,23 +32,27 @@ In the simplest form, given JSON file::
 
 is **valid scheme** although no additional generation will proceed.
 
-The simplest example could be::
+The simplest example can be
+
+.. code-block::
 
     {
         "name": "Bob",
         "age": "{{number(18,100)}"
     }
 
+which produce Bob with any age between <18, 99> e.g:
 
-which produce Bob with any age between <18, 99> where. So for example::
+.. code-block::
 
     {
         "name": "Bob",
         "age": 26
     }
 
+More useful example
 
-Let's go wild::
+.. code-block::
 
     {
         "{{range(people, 4)}}": {
@@ -53,9 +61,9 @@ Let's go wild::
 
         }
     }
+generates array of size 4 with objects containing name and age. The result
 
-
-generates array of size 4 with objects containing name and age. Example result::
+.. code-block::
 
     {
         "people": [{
@@ -77,10 +85,8 @@ generates array of size 4 with objects containing name and age. Example result::
         ]
     }
 
-
-
 Placeholders
-============
+------------
 
 +----------------------------+-------------------------------------------------------------+-----------------------------------------------------------+-------------------------------------+------------------+
 |         Placeholder        |                          Arguments                          |                        Description                        |                Usage                |      Example     |
@@ -114,11 +120,13 @@ Placeholders
 | option(arg1,arg2,...,argN) | Argument can be string, number or even another placeholder. | Choose randomly on of the argument.                       | {{option({{empty}},{{name}})}}      | Joe Hill         |
 +----------------------------+-------------------------------------------------------------+-----------------------------------------------------------+-------------------------------------+------------------+
 
+TODO - link to page about placeholders with example
 
-Usage in code
-=============
+*********
+Use it
+*********
 
-Basic usage ::
+.. code-block::
 
     jdog = Jdog('cs_CZ')
     scheme = '....' # your scheme
@@ -126,35 +134,38 @@ Basic usage ::
 
     result = jdog.generate()
 
-Just instantiate Jdog class and provide language code (en-US is default). Parse the scheme and call generate as many times you want.
-The result is json string.
+* Just instantiate :class:`.jdog.Jdog` and optionally provide language code (en-US is default).
+* Parse the scheme and call generate as many times you want.
+* The result is JSON string.
 
 
 Extending functionality
------------------------
-Jdog can be easily extended::
+=======================
+Jdog can be easily extended
 
-        # just call add_matcher to provide new placeholder
-        jdog.add_matcher('quote', lambda token: re.match('^{{quote}}$'), lambda token, args: return 'quote based on args'):
+.. code-block::
 
-Function *add_matcher* takes three arguments:
+        # call add_matcher to provide new placeholder
+        jdog.add_matcher('quote', lambda token: re.match('^{{quote}}$'), lambda token, args: return 'quote based on args')
 
-- key: unique identification of placeholder
-- f_matcher: function which takes one argument - token and should return boolean if token matches
-- f_placeholder: function which takes token and parsed arguments. Should return *Placeholder* object. See below.
+For more info see :meth:`.jdog.Jdog.add_matcher`.
 
-Note: with providing existing key, default behavior of any placeholder can be altered. To get all available placeholders, call *defined_keys* method.
+.. note::
+    When you provide existing key, default behavior of any placeholder can be altered. To get all available placeholders use :meth:`.jdog.Jdog.placeholder_keys`.
+
+TODO - link to page about extending functionality with example
 
 Placeholder class and its derivatives
 -------------------------------------
+
 Each parsed placeholder is represented with *Placeholder* class. There are many derivatives of this base class.
-New placeholder should either use *FuncPlaceholder* or sub-class *Placeholder* or *FakerPlaceholder* if faker usage is needed.
+New placeholder should either use *FuncPlaceholder* or sub-class *:class:`Placeholder*` or *:class:`FakerPlaceholder`* if faker usage is needed.
 
 TODO: describe classes --- redirect to full documentation
 
-
+*********
 CLI Usage
-=========
+*********
 
 - [PATH] (Positional argument) Path to scheme
 - *-f*, *--format* [FORMAT] Output is in given format {json, xml}.
