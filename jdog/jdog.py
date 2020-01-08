@@ -4,8 +4,8 @@ from jdog.parser import SchemeParser
 class Jdog:
     """todo"""
 
-    def __init__(self, lang='en-US'):
-        self.parser = SchemeParser(lang)
+    def __init__(self, lang='en-US', strict=False):
+        self.parser = SchemeParser(lang, strict)
         self.scheme = None
         self.root = None
 

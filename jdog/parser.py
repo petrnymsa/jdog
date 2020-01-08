@@ -13,6 +13,12 @@ from jdog.placeholder.placeholder import FuncPlaceholder, FuncStrPlaceholder
 from jdog.placeholder.range import RangePlaceholder
 
 
+class NoMatchingPlaceholder(Exception):
+    def __init__(self, token):
+        super().__init__(f'No matching placeholder for {token} found.')
+        self.token = token
+
+
 class SchemeParser:
     NAME = 'name'
     FIRST_NAME = 'first_name'
@@ -27,8 +33,9 @@ class SchemeParser:
     RANGE = 'range'
     BOOL = 'bool'
 
-    def __init__(self, lang='en-US'):
+    def __init__(self, lang='en-US', strict=False):
         self.faker = Faker(lang)
+        self.strict = strict
         self.compiled_matchers = {
             SchemeParser.NAME: re.compile(r'^{{name\(?([f,m]?)\)?}}$'),
             SchemeParser.FIRST_NAME: re.compile(r'^{{first_name\(?([f,m]?)\)?}}$'),
@@ -118,8 +125,8 @@ class SchemeParser:
         return [x[0] if x[0] != '' else x[1] for x in matches]
 
     @staticmethod
-    def _is_token(arg):
-        return re.match('^{{.*}}$', arg)
+    def _is_like_token(arg):
+        return re.match(r'^{{?.*}?}$', arg)
 
     def _match_token(self, token):
         for key in self.matchers:
@@ -130,13 +137,17 @@ class SchemeParser:
                     parsed_args = self._parse_arguments(m.group(1))
                     # parse args to placeholders
                     for arg in parsed_args:
-                        if self._is_token(arg):
+                        if self._is_like_token(arg):
                             args.append(self._sub_parse(arg))
                         else:
                             args.append(arg)
 
                 return self.placeholders[key](token, args)
-        return None
+
+        if self.strict and self._is_like_token(token):
+            raise NoMatchingPlaceholder(token)
+        else:
+            return None
 
     def add_matcher(self, key, f_matcher, f_placeholder):
         self.matchers[key] = f_matcher
