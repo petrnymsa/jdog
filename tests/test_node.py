@@ -53,7 +53,7 @@ def test_array():
 
 
 def test_placeholder():
-    pl = jph.FuncStrPlaceholder('ff', lambda: 'test_value')
+    pl = jph.FuncStrPlaceholder('ff', [], lambda _: 'test_value')
     node = jn.PlaceholderNode(pl)
     assert node.exec() == '"test_value"'
 

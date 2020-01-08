@@ -80,23 +80,23 @@ class SchemeParser:
             SchemeParser.LAST_NAME:
                 lambda token, args: self._placeholder_last_name(token, args),
             SchemeParser.CITY:
-                lambda token, _: FuncStrPlaceholder(token, self.faker.city),
+                lambda token, _: FuncStrPlaceholder(token, _, lambda __: self.faker.city),
             SchemeParser.STREET_ADDRESS:
-                lambda token, _: FuncStrPlaceholder(token, self.faker.street_address),
+                lambda token, _: FuncStrPlaceholder(token, _, lambda __: self.faker.street_address),
             SchemeParser.AGE:
-                lambda token, _: FuncPlaceholder(token, lambda: random.randint(1, 99)),
+                lambda token, _: FuncPlaceholder(token, _, lambda __: random.randint(1, 99)),
             SchemeParser.NUMBER:
-                lambda token, args: FuncPlaceholder(token, lambda: random.randint(int(args[0]), int(args[1]) - 1)),
+                lambda token, args: FuncPlaceholder(token, args, lambda xargs: random.randint(int(xargs[0]), int(xargs[1]) - 1)),
             SchemeParser.LOREM:
-                lambda token, args: FuncStrPlaceholder(token, lambda: self.faker.sentence(nb_words=int(args[0]))),
+                lambda token, args: FuncStrPlaceholder(token, args, lambda xargs: self.faker.sentence(nb_words=int(xargs[0]))),
             SchemeParser.OPTION:
                 lambda token, args: OptionPlaceholder(token, args),
             SchemeParser.EMPTY:
-                lambda token, _: FuncStrPlaceholder(token, lambda: ''),
+                lambda token, _: FuncStrPlaceholder(token, _, lambda __: ''),
             SchemeParser.RANGE:
                 lambda token, args: RangePlaceholder(token, args),
             SchemeParser.BOOL:
-                lambda token, _: FuncStrPlaceholder(token, lambda: str(random.random() > 0.5).lower())
+                lambda token, _: FuncStrPlaceholder(token, _, lambda __: str(random.random() > 0.5).lower())
         }
 
     def _placeholder_name(self, token, args):
@@ -214,7 +214,7 @@ class SchemeParser:
     def parse(self, scheme):
         """
             Parse given scheme and return node structure representation of the scheme.
-            
+
         :param str scheme: Scheme to parse
         :return: Node structure representing current scheme
         """

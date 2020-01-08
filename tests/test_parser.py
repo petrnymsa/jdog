@@ -35,3 +35,4 @@ def test_option_nested(monkeypatch):
 
     assert res == '{"value":"foo"}' or res == '{"value":1}'
 
+# todo test other default placeholders
