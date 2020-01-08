@@ -29,6 +29,7 @@ jobs:
         pip install pytest
         python -m pytest
     - name: Upload to test pypi
+      if: github.ref == 'refs/heads/dev'
       env:
         TWINE_REPOSITORY_URL: https://test.pypi.org/legacy/
         TWINE_USERNAME: ${{ secrets.TEST_PYPI_USERNAME }}
@@ -36,3 +37,11 @@ jobs:
       run: |
         python setup.py sdist        
         twine upload --skip-existing -r testpypi dist/*
+     - name: Upload to pypi
+       if: github.ref == 'refs/heads/master'
+       env:
+         TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+         TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+       run: |
+         python setup.py sdist 
+         twine upload --skip-existing dist/*
