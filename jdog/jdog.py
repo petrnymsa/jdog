@@ -2,16 +2,29 @@ from jdog.parser import SchemeParser
 
 
 class Jdog:
-    """todo"""
+    """Proxy class to parser. Accepts language to use, parsing scheme and generating new data
+
+    :var str lang: Language code to use. See :class:`faker.Faker` for supported languages.
+    :var boolean strict: If parser should raise NoMatchingPlaceholder error when parsing placeholders.
+    """
 
     def __init__(self, lang='en-US', strict=False):
+        """
+        :param str lang: Language code to use. See :class:`Faker` for supported languages.
+        :param boolean strict: If parser should raise NoMatchingPlaceholder error when parsing placeholders.
+        """
         self.parser = SchemeParser(lang, strict)
         self.scheme = None
         self.root = None
 
     def parse_scheme(self, scheme):
-        # todo custom error if scheme is not valid
-        """todo"""
+        """
+        Parse scheme for generator
+
+        :param str scheme: Scheme to use and parse
+
+        :raises: :class:`.jdog.parser.NoMatchingPlaceholder`, :class:`json.JsonDecodeError`
+        """
         self.scheme = scheme
         self.root = self.parser.parse(scheme)
 

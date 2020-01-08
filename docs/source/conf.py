@@ -39,6 +39,8 @@ extensions = [
     'sphinx.ext.autosectionlabel'
 ]
 
+intersphinx_mapping = {'faker': ('https://faker.readthedocs.io/en/master/', None)}
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
