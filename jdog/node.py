@@ -1,12 +1,7 @@
 import random
 
 
-class Node:
-    def exec(self):
-        pass
-
-
-class _GroupNode(Node):
+class _GroupNode:
     def __init__(self, begin_token, end_token, nodes):
         self.begin_token = begin_token
         self.end_token = end_token
@@ -27,7 +22,7 @@ class ArrayNode(_GroupNode):
         super().__init__('[', ']', children)
 
 
-class FuncNode(Node):
+class FuncNode:
     def __init__(self, f):
         self.f = f
 
@@ -35,7 +30,7 @@ class FuncNode(Node):
         return self.f()
 
 
-class RangeNode(Node):
+class RangeNode:
     def __init__(self, name, l, child, h=None):
         self.name = name
         self.low = int(l)
@@ -54,7 +49,7 @@ class RangeNode(Node):
         return f'"{self.name}": {ArrayNode(children).exec()}'
 
 
-class PlaceholderNode(Node):
+class PlaceholderNode:
     def __init__(self, placeholder):
         self.placeholder = placeholder
 
@@ -62,7 +57,7 @@ class PlaceholderNode(Node):
         return self.placeholder.exec()
 
 
-class PropertyNode(Node):
+class PropertyNode:
     def __init__(self, name, child):
         self.name = name
         self.child = child
@@ -74,7 +69,7 @@ class PropertyNode(Node):
             return f'{self.name.exec()}:""'
 
 
-class ScalarNode(Node):
+class ScalarNode:
     def __init__(self, value):
         self.value = value
 
