@@ -54,5 +54,6 @@ def test_scheme_invalid_placeholder():
             f.write(scheme)
 
         result = runner.invoke(run, ['scheme.json', '-s'])
-        assert result.exit_code == 0
-        assert result.output == f'{scheme}\n'
+        assert result.exit_code != 0
+        assert 'No matching placeholder' in result.output
+
