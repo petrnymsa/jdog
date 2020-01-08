@@ -34,6 +34,10 @@ class NamePlaceholder(FakerPlaceholder):
         self.option = option
 
     def exec(self):
+        """
+        :return: Name based on provided options.
+        :rtype string
+        """
         if NamePlaceholderOption.FIRST_NAME in self.option:
             return f'"{self._first_name()}"'
         elif NamePlaceholderOption.LAST_NAME in self.option:

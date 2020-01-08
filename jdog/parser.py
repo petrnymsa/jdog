@@ -6,20 +6,28 @@ from faker import Faker
 
 from jdog.node import PropertyNode, ScalarNode, PlaceholderNode, ObjectNode, ArrayNode, RangeNode
 from jdog.placeholder.name import NamePlaceholder, NamePlaceholderOption
-
-# todo name - gender parameter
 from jdog.placeholder.option import OptionPlaceholder
 from jdog.placeholder.placeholder import FuncPlaceholder, FuncStrPlaceholder
 from jdog.placeholder.range import RangePlaceholder
 
 
 class NoMatchingPlaceholder(Exception):
+    """Raised when no matching placeholder was found."""
+
     def __init__(self, token):
         super().__init__(f'No matching placeholder for {token} found.')
         self.token = token
 
 
 class SchemeParser:
+    """
+        Parsing provided scheme and construct node structure for later data generation.
+        Defines predefined placeholders.
+
+        :var faker faker: Faker instance with provided language
+        :var boolean strict: If parser should raise :class:`.NoMatchingPlaceholder`
+    """
+
     NAME = 'name'
     FIRST_NAME = 'first_name'
     LAST_NAME = 'last_name'
@@ -131,18 +139,21 @@ class SchemeParser:
     def _match_token(self, token):
         for key in self.matchers:
             m = self.matchers[key](str(token))
-            if m is not None:
-                args = []
-                if len(m.groups()) > 0:
-                    parsed_args = self._parse_arguments(m.group(1))
-                    # parse args to placeholders
-                    for arg in parsed_args:
-                        if self._is_like_token(arg):
-                            args.append(self._sub_parse(arg))
-                        else:
-                            args.append(arg)
 
-                return self.placeholders[key](token, args)
+            if m is None:
+                continue
+
+            args = []
+            if len(m.groups()) > 0:
+                parsed_args = self._parse_arguments(m.group(1))
+                # parse args to placeholders
+                for arg in parsed_args:
+                    if self._is_like_token(arg):
+                        args.append(self._sub_parse(arg))
+                    else:
+                        args.append(arg)
+
+            return self.placeholders[key](token, args)
 
         if self.strict and self._is_like_token(token):
             raise NoMatchingPlaceholder(token)
@@ -150,10 +161,26 @@ class SchemeParser:
             return None
 
     def add_matcher(self, key, f_matcher, f_placeholder):
+        """
+            Add new matcher for returning new placeholder
+
+        :param key: Unique matcher key. If provided existing one, old behavior is replaced.
+        :param f_matcher: Function which takes one str argument.
+            Should return re.Match object or None if no match found.
+        :param f_placeholder: Function which takes accepted token and its parsed arguments - if present.
+            Should return one of :class:`~jdog.placeholder.placeholder.Placeholder` object.
+        """
+
         self.matchers[key] = f_matcher
         self.placeholders[key] = f_placeholder
 
     def placeholder_keys(self):
+        """
+            Defined placeholder keys
+
+        :return: Defined placeholder keys
+        :rtype: list
+        """
         return self.placeholders.keys()
 
     def _sub_parse(self, sub):
@@ -185,6 +212,12 @@ class SchemeParser:
                 return PlaceholderNode(placeholder)
 
     def parse(self, scheme):
+        """
+            Parse given scheme and return node structure representation of the scheme.
+            
+        :param str scheme: Scheme to parse
+        :return: Node structure representing current scheme
+        """
         js = json.loads(scheme)
-        root = self._sub_parse(js)
-        return root
+        return self._sub_parse(js)
+

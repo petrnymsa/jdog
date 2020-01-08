@@ -14,6 +14,12 @@ Just another Data Offline Generator (JDOG) 🐶
 
    pages/placeholders
    pages/extending
+
+.. toctree::
+   :maxdepth: 2
+   :caption: API
+   :hidden:
+
    pages/api
 
 .. include:: ../../README.rst

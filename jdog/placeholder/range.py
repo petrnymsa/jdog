@@ -1,5 +1,4 @@
 from jdog.placeholder.placeholder import Placeholder
-import random
 
 
 class RangePlaceholder(Placeholder):
@@ -9,14 +8,7 @@ class RangePlaceholder(Placeholder):
         self.low = args[1]
         if len(args) > 2:
             self.high = args[2]
-        #self.times = 0
 
     def exec(self):
-        # if self.high:
-        #     self.times = random.randint(self.low, self.high - 1)
-        # else:
-        #     self.times = self.low
-        #
-        # return f'"{self.prop}"'
         pass
 
