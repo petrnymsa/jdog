@@ -6,7 +6,10 @@
 Just another Data Offline Generator (JDOG) 🐶
 *********************************************
 
+
 🗎 `Full documentation <https://jdog.readthedocs.io/en/latest/>`_.
+==================================================================
+
 
 .. start-inclusion-marker-do-not-remove
 
