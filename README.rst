@@ -124,4 +124,8 @@ By default, CLI tool does not save output to file, just print results to standar
 
 👍 JDOG is using awesome package `Faker <https://faker.readthedocs.io>`_ which is used to generate random data.
 
+`CONTRIBUTING <https://github.com/petrnymsa/jdog/blob/master/CONTRIBUTING.md>`_
+===============================================================================
 
+`LICENSE <https://github.com/petrnymsa/jdog/blob/master/LICENSE>`_
+===============================================================================

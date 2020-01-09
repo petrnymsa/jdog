@@ -37,7 +37,8 @@ extensions = [
     'sphinx.ext.doctest',
     'sphinx.ext.intersphinx',
     'sphinx.ext.autosectionlabel',
-    'sphinx_rtd_theme'
+    'sphinx_rtd_theme',
+    'recommonmark'
 ]
 
 intersphinx_mapping = {'faker': ('https://faker.readthedocs.io/en/master/', None)}
