@@ -7,7 +7,7 @@ with open('README.rst', encoding='utf-8') as f:
 
 setup(
     name='jdog',
-    version='0.2.1',
+    version='0.2.2',
     description='Just another Data Offline Generator',
     long_description=long_description,
     author='Petr Nymsa',
