@@ -18,6 +18,8 @@ Just another Data Offline Generator (JDOG) 🐶
 Scheme
 ======
 
+TODO  QUICKSTART
+
 - Scheme is provided in JSON format with special placeholders.
 - Placeholder is something like variable, where generated data will be replaced.
 - Output is nearly the same as scheme besides replaced placeholders.
