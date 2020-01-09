@@ -45,4 +45,17 @@ def test_add_new():
     assert res == """{"f":"foo"}"""
 
 
+def test_redefine():
+    scheme = """{"f":"{{age}}"}"""
+
+    def match(token):
+        return re.match(r'^{{age}}$', token)
+
+    jdog = jd.Jdog()
+    jdog.add_matcher('age', match, lambda tok,arg: FuncPlaceholder(tok,arg, lambda _: 666))
+
+    jdog.parse_scheme(scheme)
+    res = jdog.generate()
+
+    assert res == """{"f":666}"""
 
