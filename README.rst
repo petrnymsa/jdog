@@ -122,4 +122,6 @@ By default, CLI tool does not save output to file, just print results to standar
 
 .. end-inclusion-marker-do-not-remove
 
-TODO - faker info
+👍 JDOG is using awesome package `Faker <https://faker.readthedocs.io>`_ which is used to generate random data.
+
+
