@@ -48,7 +48,7 @@ def _print_output(result, pretty, output):
               callback=_lang_help)
 @click.option('-o', '--output', type=click.File('w'), help='Output file where result is written.')
 def run(scheme, strict, pretty, lang, lang_help, output):
-    """Accepts SCHEME and generate new data to stdin or to specified OUTPUT"""
+    """Accepts SCHEME and generates new data to stdin or to specified OUTPUT"""
     try:
         jdog = Jdog(lang, strict)
         scheme_text = scheme.read()

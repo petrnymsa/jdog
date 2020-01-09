@@ -80,9 +80,9 @@ class SchemeParser:
             SchemeParser.LAST_NAME:
                 lambda token, args: self._placeholder_last_name(token, args),
             SchemeParser.CITY:
-                lambda token, _: FuncStrPlaceholder(token, _, lambda __: self.faker.city),
+                lambda token, _: FuncStrPlaceholder(token, _, lambda __: self.faker.city()),
             SchemeParser.STREET_ADDRESS:
-                lambda token, _: FuncStrPlaceholder(token, _, lambda __: self.faker.street_address),
+                lambda token, _: FuncStrPlaceholder(token, _, lambda __: self.faker.street_address()),
             SchemeParser.AGE:
                 lambda token, _: FuncPlaceholder(token, _, lambda __: random.randint(1, 99)),
             SchemeParser.NUMBER:

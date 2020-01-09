@@ -19,74 +19,113 @@ Scheme
 ======
 
 - Scheme is provided in JSON format with special placeholders.
-- Placeholder is something like variable, where generated data will be replaced.
-- Output is nearly the same as scheme besides replaced placeholders.
+- In the output placeholders are replaced with some generated data.
 
-In the simplest form, given JSON scheme
+Any valid JSON is **valid** scheme.
 
-.. code-block:: json
+How to use it?
+==============
+Prepare scheme
+
+.. code-block::
 
     {
-        "name": "Bob",
-        "age" : "18"
+      "{{range(people,4)}}": {
+        "name": "{{name}}",
+        "age": "{{age}}",
+        "address": {
+          "city": "{{city}}"
+        },
+        "car": "{{option(mustang,{{empty}})}}"
+      }
     }
 
-is **valid scheme** although no additional generation will proceed.
+.. code-block::
 
-The simplest example can be
+    from jdog import Jdog
 
-.. code-block:: json
+    def main():
+        jdog = Jdog()
+        scheme = ... # your loaded scheme
 
-    {
-        "name": "Bob",
-        "age": "{{number(18,100)}"
-    }
+        # parse scheme
+        jdog.parse_scheme(scheme)
 
-which produce Bob with any age between <18, 99> e.g:
+        # generate instance
+        result = jdog.generate()
 
-.. code-block:: json
+        print(result) # result is JSON
 
-    {
-        "name": "Bob",
-        "age": 26
-    }
+And the example result:
 
-More useful example
-
-.. code-block:: json
+.. code-block::
 
     {
-        "{{range(people, 4)}}": {
-            "name": "{{first_name}}",
-            "age" : "{{number(18, 100)}}"
-
-        }
-    }
-
-generates array of size 4 with objects containing name and age. The result
-
-.. code-block:: json
-
-    {
-        "people": [{
-                "name": "Bob",
-                "age": "18"
+        "people": [
+            {
+                "name": "Brandi Young",
+                "age": 39,
+                "address": {
+                    "city": "Jamietown"
+                },
+                "car": "mustang"
             },
             {
-                "name": "Alice",
-                "age": 25
+                "name": "Michelle Best",
+                "age": 70,
+                "address": {
+                    "city": "Port Dustin"
+                },
+                "car": ""
             },
             {
-                "name": "George",
-                "age": 85
+                "name": "Donald Hernandez",
+                "age": 79,
+                "address": {
+                    "city": "East Julieshire"
+                },
+                "car": "mustang"
             },
             {
-                "name": "Janice",
-                "age": 34
+                "name": "Kaitlyn Cook",
+                "age": 3,
+                "address": {
+                    "city": "Rachelton"
+                },
+                "car": "mustang"
             }
         ]
     }
 
+
+
+CLI
+****
+Package can be used as cli tool.
+
+.. code-block::
+
+    Usage: jdog [OPTIONS] SCHEME
+
+    Accepts SCHEME and generates new data to stdin or to specified OUTPUT
+
+    Options:
+      -p, --pretty           Output as pretty JSON.
+      -s, --strict           Raise error when no matching placeholder is found.
+      -l, --lang TEXT        Language to use.
+      --lang-help            Displays available language codes and exit.
+      -o, --output FILENAME  Output file where result is written.
+      --help                 Show this message and exit.
+
+
+By default, CLI tool does not save output to file, just print results to standard output.
+
 .. end-inclusion-marker-do-not-remove
 
-TODO - faker info
+👍 JDOG is using awesome package `Faker <https://faker.readthedocs.io>`_ which is used to generate random data.
+
+`CONTRIBUTING <https://github.com/petrnymsa/jdog/blob/master/CONTRIBUTING.md>`_
+===============================================================================
+
+`LICENSE <https://github.com/petrnymsa/jdog/blob/master/LICENSE>`_
+===============================================================================
