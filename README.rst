@@ -13,22 +13,21 @@ Just another Data Offline Generator (JDOG) 🐶
 
 .. start-inclusion-marker-do-not-remove
 
-- JDOG is Python library which helps generate sample data for your projects.
-- JDOG can be run also as CLI tool.
-- For generating sample data, the data scheme is provided
-- The scheme is in JSON format
+- JDOG is a Python library which helps generate a sample data for your projects.
+- JDOG can also be run as CLI tool.
+- For generating a sample data, the data scheme is provided.
 
 Scheme
 ======
 
-- Scheme is provided in JSON format with special placeholders.
-- In the output placeholders are replaced with some generated data.
+- The *scheme* is provided in JSON format with special placeholders.
+- In the output, the placeholders are replaced with some generated data.
 
 Any valid JSON is **valid** scheme.
 
 How to use it?
 ==============
-Prepare scheme
+Prepare a scheme
 
 .. code-block::
 
@@ -42,6 +41,8 @@ Prepare scheme
         "car": "{{option(mustang,{{empty}})}}"
       }
     }
+
+From code:
 
 .. code-block::
 
@@ -99,8 +100,6 @@ And the example result:
             }
         ]
     }
-
-
 
 CLI
 ****

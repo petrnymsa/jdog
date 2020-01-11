@@ -4,7 +4,7 @@
 Placeholders
 ############
 
-Each placeholder serves as place where new, random value will be replaced in the output.
+Each placeholder serves as a place where the new, random value will be replaced in the output.
 
 Generally each placeholder is enclosed between **{{** and **}}**. So for example:
 
@@ -14,7 +14,7 @@ Generally each placeholder is enclosed between **{{** and **}}**. So for example
 
 Some placeholders accept arguments and some arguments can be required or optional. See below details of each placeholder.
 
-Optional placeholder within table is denoted by *[* arg *]*.
+Optional placeholder within the table is denoted by *[* arg *]*.
 
 +-----------------------------------+-----------------------------------------------------------+
 |         Placeholder               |                        Description                        |
@@ -41,20 +41,20 @@ Optional placeholder within table is denoted by *[* arg *]*.
 +-----------------------------------+-----------------------------------------------------------+
 | :ref:`bool`                       | Boolean value - true / false                              |
 +-----------------------------------+-----------------------------------------------------------+
-| :ref:`option(arg1,arg2,...,argN)` |  Choose randomly one of the argument.                     |
+| :ref:`option(arg1,arg2,...,argN)` | Choose randomly one of the argument.                      |
 +-----------------------------------+-----------------------------------------------------------+
 
 Defined placeholders
 ********************
 
-Follows description of each defined placeholder available to use.
+Follows a description of each defined placeholder available to use.
 
 .. note::
-    Internally JDOG using amazing `Faker package <https://faker.readthedocs.io>`_ to generate random values.
+    Internally JDOG is using amazing `Faker package <https://faker.readthedocs.io>`_ to generate random values.
 
 name([m,f])
 ===========
-Generic person full name - that is first and last name.
+Generic person full name - that is the first and last name.
 
 Arguments
 ---------
@@ -157,7 +157,7 @@ Example
 
 age
 ===
-Random number between 1 to 99. Effectively the same as using `{{number(1,100)}}`.
+A random number from 1 to 99. Effectively the same as using `{{number(1,100)}}`.
 
 Arguments
 ---------
@@ -245,7 +245,7 @@ Example
 
 empty
 =====
-Empty value. Useful with combination in :ref:`option <option(arg1,arg2,...,argN)>` placeholder.
+Empty value. Useful with combination with :ref:`option <option(arg1,arg2,...,argN)>` placeholder.
 
 Arguments
 ---------
@@ -267,7 +267,7 @@ Example
 
 range(prop,n,[m])
 =================
-Generates property named *prop* with array of values. Number of values depends on arguments *n* and *m*.
+Generates property named *prop* with an array of values. The number of benefits depends on arguments *n* and *m*.
 
 Note that range placeholder *should be used at the left side* of property. See examples below.
 
@@ -279,7 +279,7 @@ Arguments
 
 Example
 -------
-Generate exactly 4 people objects.
+Generate exactly four people objects.
 
 .. code-block::
 

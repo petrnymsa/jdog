@@ -4,7 +4,7 @@
 Extending JDOG
 **************
 
-If you want change behavior of some defined placeholder or, more likely, introduce new one you can.
+It's easy to add new placeholder.
 
 JDOG instance has two methods which support you to extend behavior.
 
@@ -13,8 +13,7 @@ JDOG instance has two methods which support you to extend behavior.
 
 Each **placeholder** is represented by some subclass of :class:`~jdog.placeholder.placeholder.Placeholder` class.
 
-Especially will come handy `~jdog.placeholder.placeholder.FuncPlaceholder` which can be easily used to introduce new placeholders.
-Of course it is possible to subclass :class:`~jdog.placeholder.placeholder.Placeholder`.
+Especially comes handy :class:`~jdog.placeholder.placeholder.FuncPlaceholder` which can be easily used to introduce new placeholders.
 
 So, how to add a new placeholder?
 =================================
@@ -22,10 +21,10 @@ For example we want to introduce *fizzbuzz* placeholder which with 50% chance pr
 
 Its only a few steps and you are good to go.
 
-#. Think of a new name (or use an existing one)
-#. Create regex pattern
-#. Add placeholder - use :class:`~jdog.placeholder.placeholder.FuncPlaceholder` or subclass :class:`~jdog.placeholder.placeholder.Placeholder`
-#. Put it together and call :meth:`~jdog.jdog.Jdog.add_matcher`
+#. Think of a new name (or use an existing one).
+#. Create regex pattern.
+#. Add placeholder - use :class:`~jdog.placeholder.placeholder.FuncPlaceholder` or subclass :class:`~jdog.placeholder.placeholder.Placeholder`.
+#. Put it together and call :meth:`~jdog.jdog.Jdog.add_matcher`.
 
 Come up with new name
 ---------------------
