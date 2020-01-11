@@ -1,3 +1,5 @@
+import re
+
 from jdog.parser import SchemeParser
 
 
@@ -36,17 +38,15 @@ class Jdog:
         """
         return self.root.exec()
 
-    def add_matcher(self, key, f_matcher, f_placeholder):
+    def add_matcher(self, key, pattern, f_placeholder):
         """ Add or redefine placeholder identified by KEY
 
-                :param str key: Unique placeholder identification
-                :param func f_matcher: Function to determine if given token is desired placeholder.
-                    Function takes one str argument. Check this argument if matches.
-
+                :param str key: Unique placeholder identification.
+                :param str pattern: Regex pattern which detects given placeholder.
                 :param func f_placeholder: Function which should return :class:`Placeholder` object.
                     Function takes matched token and its arguments - if present.
         """
-        self.parser.add_matcher(key, f_matcher, f_placeholder)
+        self.parser.add_matcher(key, lambda token: re.match(pattern, token), f_placeholder)
 
     def placeholder_keys(self):
         """ Returns all defined placeholder keys
