@@ -27,6 +27,13 @@ Any valid JSON is **valid** scheme.
 
 How to use it?
 ==============
+
+Install it
+
+.. code-block::
+
+    python -m pip install jdog
+
 Prepare a scheme
 
 .. code-block::
@@ -42,7 +49,7 @@ Prepare a scheme
       }
     }
 
-From code:
+Use it
 
 .. code-block::
 
