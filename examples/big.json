@@ -1,0 +1,18 @@
+{
+    "version": "{{number(1,5)}}",
+    "validated": "{{bool}}",
+    "{{range(people,20,100)}}": {
+        "personal_info": {
+            "age": "{{age}}",
+            "first_name": "{{first_name}}",
+            "last_name": "{{last_name}}"
+        },
+        "deposit": "{{number(10000,60000000)}}",
+        "{{range(items,0,4)}}": {
+            "name": "{{option(axe,sword,stick)}}",
+            "durability": "{{number(1,101)}}",
+            "is_magic": "{{bool}}",
+            "perk": "{{option({{empty}},heal,damage)}}"
+        }
+    }
+}
