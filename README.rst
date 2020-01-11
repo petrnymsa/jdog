@@ -7,7 +7,7 @@ Just another Data Offline Generator (JDOG) 🐶
 *********************************************
 
 
-🗎 `Full documentation <https://jdog.readthedocs.io/en/latest/>`_.
+🗎 `Full documentation <https://jdog.readthedocs.io/en/stable/>`_.
 ==================================================================
 
 
